@@ -413,7 +413,7 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
          ITEM_ENEMY_BEETLE, ITEM_NONE,    ITEM_NONE,   ITEM_NONE,         ITEM_NONE,          ITEM_NONE,
      }*/;
 
-    int r0, itemid, rand, summOdds, item;
+    int r0, itemId, rand, summOdds, item;
     u32 r3;
     const Droptable *ptr2, *ptr3, *ptr4;
     Droptable droptable;
@@ -448,32 +448,33 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
                 break;
         }
         if (ptr4 != 0) {
-            if ((itemid = gSave.stats.picolyteType) == 0) {
+            if ((itemId = gSave.stats.picolyteType) == 0) {
                 // nop
                 ptr3 = &gDroptableModifiers[DROPTABLE_NONE];
             } else {
 #ifdef EU
-                ptr3 = &gEnemyDroptables[itemid + 9];
+                ptr3 = &gEnemyDroptables[itemId + 9];
 #else
-                ptr3 = &gEnemyDroptables[itemid + 6];
+                ptr3 = &gEnemyDroptables[itemId + 6];
 #endif
             }
             // vector addition, s0 = ptr4 + ptr2 + ptr3
             SumDropProbabilities(droptable.a, ptr4->a, ptr2->a, ptr3->a);
-            if (gSave.stats.health <= 8) {
+            if (gSave.stats.health < gSave.stats.maxHealth) {
                 droptable.s.hearts += 7;
             }
-            if (gSave.stats.bombCount <= 5 || IsItemEquipped(PL_ITEM_BOMB)) {
+            if (gSave.stats.bombCount < gBombBagSizes[gSave.stats.bombBagType] || IsItemEquipped(PL_ITEM_BOMB)) {
                 droptable.s.bombs += 5;
             }
-            if (gSave.stats.arrowCount <= 5 || IsItemEquipped(PL_ITEM_BOW)) {
+            if (gSave.stats.arrowCount < gQuiverSizes[gSave.stats.quiverType] || IsItemEquipped(PL_ITEM_BOW)) {
                 droptable.s.arrows += 5;
             }
-            if (gSave.stats.rupees > 0) {
-                droptable.s.rupee1  += 3;
-                droptable.s.rupee5 += 2;
-                droptable.s.rupee20 += 1;
+            if (gSave.stats.rupees < gWalletSizes[gSave.stats.walletType].size) {
+                droptable.s.rupee1 += 5;
+                droptable.s.rupee5 += 3;
+                droptable.s.rupee20 += 2;
             }
+
             ptr2 = &gDroptableModifiers[DROPTABLE_NONE];
             r0 = gSave.stats.hasAllFigurines;
             ptr3 = &gDroptableModifiers[DROPTABLE_NONE];
@@ -495,15 +496,15 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
             rand = rand % summOdds;
             {
                 u32 r3;
-                for (r3 = 0, itemid = 0; r3 < 0x10; r3++, item = (item + 1) & 0xF) {
-                    if ((itemid += droptable.a[item]) > rand) {
+                for (r3 = 0, itemId = 0; r3 < 0x10; r3++, item = (item + 1) & 0xF) {
+                    if ((itemId += droptable.a[item]) > rand) {
                         break;
                     }
                 }
             }
-            itemid = gUnk_080FE1B4[item];
-            if (itemid != ITEM_NONE) {
-                return CreateItemDrop(arg0, itemid, 0);
+            itemId = gUnk_080FE1B4[item];
+            if (itemId != ITEM_NONE) {
+                return CreateItemDrop(arg0, itemId, 0);
             }
         }
     }
