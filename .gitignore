@@ -18,8 +18,7 @@ docs/doxygen/html/
 docs/doxygen/xml/
 
 # tools
-tools/agbcc
-tools/binutils
+tools/
 
 # scripts
 *.py
