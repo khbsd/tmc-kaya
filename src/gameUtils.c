@@ -246,18 +246,25 @@ bool32 AreaHasKeys(void) {
 
 bool32 HasDungeonSmallKey(void) {
     u32 tmp;
+    bool32 randomEntry = ((s32)Random() % 100) <= 5;
 
     if (AreaHasKeys())
         tmp = gSave.dungeonKeys[gArea.dungeon_idx];
+    if (randomEntry)
+        return 1;
+
     return tmp ? 1 : 0;
 }
 
 bool32 HasDungeonBigKey(void) {
     u32 tmp;
-    u32 randomEntry = (Random()
+    bool32 randomEntry = ((s32)Random() % 100) <= 2;
 
     if (AreaHasKeys())
         tmp = gSave.dungeonItems[gArea.dungeon_idx] & 4;
+    if (randomEntry)
+        return 1;
+
     return tmp ? 1 : 0;
 }
 

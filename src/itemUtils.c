@@ -461,18 +461,18 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
             // vector addition, s0 = ptr4 + ptr2 + ptr3
             SumDropProbabilities(droptable.a, ptr4->a, ptr2->a, ptr3->a);
             if (gSave.stats.health <= 8) {
-                droptable.s.hearts += 5;
+                droptable.s.hearts += 7;
             }
-            if (gSave.stats.bombCount == 0) {
-                droptable.s.bombs += 3;
+            if (gSave.stats.bombCount <= 5 || IsItemEquipped(PL_ITEM_BOMB)) {
+                droptable.s.bombs += 5;
             }
-            if (gSave.stats.arrowCount == 0) {
-                droptable.s.arrows += 3;
+            if (gSave.stats.arrowCount <= 5 || IsItemEquipped(PL_ITEM_BOW)) {
+                droptable.s.arrows += 5;
             }
             if (gSave.stats.rupees > 0) {
-                droptable.s.rupee5++;
-                droptable.s.rupee10++;
-                droptable.s.rupee20++;
+                droptable.s.rupee1  += 3;
+                droptable.s.rupee5 += 2;
+                droptable.s.rupee20 += 1;
             }
             ptr2 = &gDroptableModifiers[DROPTABLE_NONE];
             r0 = gSave.stats.hasAllFigurines;
