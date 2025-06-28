@@ -254,6 +254,7 @@ bool32 HasDungeonSmallKey(void) {
 
 bool32 HasDungeonBigKey(void) {
     u32 tmp;
+    u32 randomEntry = (Random()
 
     if (AreaHasKeys())
         tmp = gSave.dungeonItems[gArea.dungeon_idx] & 4;

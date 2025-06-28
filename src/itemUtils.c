@@ -413,7 +413,7 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
          ITEM_ENEMY_BEETLE, ITEM_NONE,    ITEM_NONE,   ITEM_NONE,         ITEM_NONE,          ITEM_NONE,
      }*/;
 
-    int r0, r1, rand, summOdds, item;
+    int r0, itemid, rand, summOdds, item;
     u32 r3;
     const Droptable *ptr2, *ptr3, *ptr4;
     Droptable droptable;
@@ -448,14 +448,14 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
                 break;
         }
         if (ptr4 != 0) {
-            if ((r1 = gSave.stats.picolyteType) == 0) {
+            if ((itemid = gSave.stats.picolyteType) == 0) {
                 // nop
                 ptr3 = &gDroptableModifiers[DROPTABLE_NONE];
             } else {
 #ifdef EU
-                ptr3 = &gEnemyDroptables[r1 + 9];
+                ptr3 = &gEnemyDroptables[itemid + 9];
 #else
-                ptr3 = &gEnemyDroptables[r1 + 6];
+                ptr3 = &gEnemyDroptables[itemid + 6];
 #endif
             }
             // vector addition, s0 = ptr4 + ptr2 + ptr3
@@ -469,8 +469,10 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
             if (gSave.stats.arrowCount == 0) {
                 droptable.s.arrows += 3;
             }
-            if (gSave.stats.rupees <= 10) {
+            if (gSave.stats.rupees > 0) {
                 droptable.s.rupee5++;
+                droptable.s.rupee10++;
+                droptable.s.rupee20++;
             }
             ptr2 = &gDroptableModifiers[DROPTABLE_NONE];
             r0 = gSave.stats.hasAllFigurines;
@@ -493,15 +495,15 @@ u32 CreateRandomItemDrop(Entity* arg0, u32 arg1) {
             rand = rand % summOdds;
             {
                 u32 r3;
-                for (r3 = 0, r1 = 0; r3 < 0x10; r3++, item = (item + 1) & 0xF) {
-                    if ((r1 += droptable.a[item]) > rand) {
+                for (r3 = 0, itemid = 0; r3 < 0x10; r3++, item = (item + 1) & 0xF) {
+                    if ((itemid += droptable.a[item]) > rand) {
                         break;
                     }
                 }
             }
-            r1 = gUnk_080FE1B4[item];
-            if (r1 != ITEM_NONE) {
-                return CreateItemDrop(arg0, r1, 0);
+            itemid = gUnk_080FE1B4[item];
+            if (itemid != ITEM_NONE) {
+                return CreateItemDrop(arg0, itemid, 0);
             }
         }
     }
